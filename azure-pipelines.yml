@@ -27,7 +27,6 @@ stages:
         containerRegistry: 'Container Registry Connection'
         tags: |
           $(tag)
-
     - task: Docker@2
       displayName: 'Build and push the leaderboard image to container registry'
       inputs:
@@ -41,7 +40,7 @@ stages:
 
     - publish: '$(Build.SourcesDirectory)/manifests'
       artifact: manifests
-
+  
 - stage: 'Deploy'
   displayName: 'Deploy the containers'
   dependsOn: Build
@@ -59,6 +58,7 @@ stages:
           steps:
           - download: current
             artifact: manifests
+
           - task: KubernetesManifest@0
             displayName: Create imagePullSecret
             inputs:
